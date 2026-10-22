@@ -768,6 +768,52 @@
       .game-card::before { top: 0.5rem; right: 0.5rem; font-size: 1.5rem; }
       .game-card::after { right: 1rem; bottom: 0.5rem; font-size: 1.5rem; }
     }
+
+    main:has(#tab3.active) {
+      max-width: none;
+      padding-left: clamp(1rem, 2.5vw, 2.75rem);
+      padding-right: clamp(1rem, 2.5vw, 2.75rem);
+    }
+
+    #tab3 .grid-sidebar {
+      display: flex !important;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    #tab3 .grid-sidebar > .card {
+      order: -1;
+      width: 100%;
+      padding: clamp(1rem, 2vw, 1.75rem);
+    }
+
+    #tab3 .grid-sidebar > div {
+      order: 1;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr));
+      align-items: start;
+      gap: 1.25rem;
+    }
+
+    #tab3 .grid-sidebar > div > .card { margin-bottom: 0; }
+
+    #tab3 .canvas-container {
+      width: 100%;
+      min-height: clamp(440px, 68vh, 900px);
+      padding: clamp(0.5rem, 1vw, 1rem);
+    }
+
+    #tab3 canvas.drawing-canvas {
+      width: 100%;
+      height: clamp(420px, 66vh, 880px) !important;
+    }
+
+    @media (max-width: 700px) {
+      #tab3 .canvas-container { min-height: 58vh; }
+      #tab3 canvas.drawing-canvas { height: 56vh !important; min-height: 360px; }
+      #tab3 .grid-sidebar > div { grid-template-columns: minmax(0, 1fr); gap: 0; }
+      #tab3 .grid-sidebar > div > .card { margin-bottom: 0.85rem; }
+    }
   </style>
 <style id="monica-reading-highlight-style">
         .monica-reading-highlight {
