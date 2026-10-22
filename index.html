@@ -433,12 +433,19 @@
             <p style="font-size: 0.75rem; color: var(--text-muted);">
               Mã nhận diện Client: <strong id="myClientId" style="color: var(--accent-blue);">Client_4208</strong>
             </p>
+            <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
+              Phòng riêng: <strong id="roomIdLabel" style="color: var(--accent-purple);"></strong>
+            </p>
+            <p class="theory-text" style="font-size: 0.8rem; margin: 0.5rem 0;">
+              Chỉ người mở link mời của phòng này mới thấy và vẽ chung bảng.
+            </p>
+            <button class="btn" type="button" onclick="copyRoomLink()">🔗 Sao chép link mời</button>
           </div>
 
           <div class="card">
             <div class="card-title">
               <span>Danh Sách Client Trực Tuyến</span>
-              <span id="clientCountBadge" class="badge badge-blue">8 Online</span>
+              <span id="clientCountBadge" class="badge badge-blue">1 Online</span>
             </div>
             <div class="client-list" id="clientListContainer"><div class="client-item">
           <span><b>Client_4208</b> (Bạn)</span>
@@ -735,8 +742,24 @@
     const myId = 'Client_' + Math.floor(Math.random() * 9000 + 1000);
     document.getElementById('myClientId').textContent = myId;
 
-    const topicName = "netprog/class/whiteboard/room_master";
-    const presenceTopic = "netprog/class/whiteboard/presence";
+    const roomParams = new URLSearchParams(window.location.search);
+    const roomTokenPattern = /^[a-f0-9]{32}$/;
+    let roomId = roomParams.get('room');
+
+    if (!roomId || !roomTokenPattern.test(roomId)) {
+      const randomBytes = new Uint8Array(16);
+      crypto.getRandomValues(randomBytes);
+      roomId = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
+      roomParams.set('room', roomId);
+      const roomUrl = new URL(window.location.href);
+      roomUrl.search = roomParams.toString();
+      window.history.replaceState(null, '', roomUrl);
+    }
+
+    document.getElementById('roomIdLabel').textContent = roomId.slice(0, 8);
+    const roomTopicPrefix = `netprog/class/whiteboard/${roomId}`;
+    const topicName = `${roomTopicPrefix}/draw`;
+    const presenceTopic = `${roomTopicPrefix}/presence`;
 
     const activeClients = new Map();
     activeClients.set(myId, { id: myId, status: 'Đang hoạt động', lastSeen: Date.now() });
@@ -768,6 +791,17 @@
     }
 
     let client = null;
+
+    async function copyRoomLink() {
+      const inviteLink = window.location.href;
+      try {
+        await navigator.clipboard.writeText(inviteLink);
+        logNet('Đã sao chép link mời phòng. Chỉ chia sẻ link này với người bạn muốn mời.');
+      } catch (error) {
+        console.error('Không thể tự động sao chép link mời:', error);
+        window.prompt('Hãy sao chép link mời này để gửi cho người bạn muốn mời:', inviteLink);
+      }
+    }
 
     function getCursorPos(e) {
       const rect = canvas.getBoundingClientRect();
