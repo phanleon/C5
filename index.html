@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Chương 5 Lab: Multi-Client, Broadcast &amp; MQTT Collaborative Whiteboard</title>
   <!-- Nhúng thư viện MQTT.js qua CDN -->
-  <script src="./C5_files/mqtt.min.js.download"></script>
+  <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
   <style>
     :root {
       --bg-main: #0f172a;
@@ -425,7 +425,7 @@
           <div class="card">
             <div class="card-title">
               <span>Trạng Thái Kết Nối MQTT</span>
-              <span id="connStatus" class="badge badge-green">Đã kết nối</span>
+              <span id="connStatus" class="badge badge-amber">Đang kết nối...</span>
             </div>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.5rem;">
               Broker: <code class="inline-code">broker.hivemq.com:8884</code>
@@ -767,46 +767,7 @@
       });
     }
 
-    const client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', { clientId: myId });
-
-    client.on('connect', () => {
-      logNet('Đã kết nối thành công tới Public MQTT Broker!');
-      document.getElementById('connStatus').textContent = 'Đã kết nối';
-      document.getElementById('connStatus').className = 'badge badge-green';
-
-      client.subscribe([topicName, presenceTopic], (err) => {
-        if (!err) logNet(`Đã Subscribe vào các Topic chính.`);
-      });
-
-      setInterval(() => {
-        client.publish(presenceTopic, JSON.stringify({ id: myId, status: 'Active' }));
-      }, 3000);
-    });
-
-    client.on('message', (topic, payload) => {
-      try {
-        const data = JSON.parse(payload.toString());
-
-        if (topic === presenceTopic) {
-          if (data.id && data.id !== myId) {
-            activeClients.set(data.id, { id: data.id, status: 'Trực tuyến', lastSeen: Date.now() });
-            updateClientListUI();
-          }
-        } else if (topic === topicName) {
-          if (data.sender === myId) return;
-
-          if (data.type === 'draw') {
-            drawLine(data.x1, data.y1, data.x2, data.y2, data.color, data.size);
-            logNet(`[${data.sender}] Vẽ nét x(${Math.round(data.x1)}->${Math.round(data.x2)})`);
-          } else if (data.type === 'clear') {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            logNet(`[${data.sender}] Xóa sạch bảng`);
-          }
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    });
+    let client = null;
 
     function getCursorPos(e) {
       const rect = canvas.getBoundingClientRect();
@@ -818,9 +779,11 @@
         clientX = e.clientX;
         clientY = e.clientY;
       }
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
       return {
-        x: clientX - rect.left,
-        y: clientY - rect.top
+        x: (clientX - rect.left) * scaleX,
+        y: (clientY - rect.top) * scaleY
       };
     }
 
@@ -842,7 +805,7 @@
 
       drawLine(lastX, lastY, currentX, currentY, currentColor, size);
 
-      if (client.connected) {
+      if (client && client.connected) {
         const packet = JSON.stringify({
           sender: myId,
           type: 'draw',
@@ -883,6 +846,70 @@
       ctx.closePath();
     }
 
+    if (typeof mqtt !== 'undefined' && typeof mqtt.connect === 'function') {
+      client = mqtt.connect('wss://broker.hivemq.com:8884/mqtt', { clientId: myId });
+
+      client.on('connect', () => {
+        logNet('Đã kết nối thành công tới Public MQTT Broker!');
+        document.getElementById('connStatus').textContent = 'Đã kết nối';
+        document.getElementById('connStatus').className = 'badge badge-green';
+
+        client.subscribe([topicName, presenceTopic], (err) => {
+          if (err) {
+            logNet(`Lỗi đăng ký topic MQTT: ${err.message}`);
+            return;
+          }
+          logNet('Đã Subscribe vào các Topic chính.');
+        });
+
+        setInterval(() => {
+          if (client.connected) {
+            client.publish(presenceTopic, JSON.stringify({ id: myId, status: 'Active' }));
+          }
+        }, 3000);
+      });
+
+      client.on('message', (topic, payload) => {
+        try {
+          const data = JSON.parse(payload.toString());
+
+          if (topic === presenceTopic) {
+            if (data.id && data.id !== myId) {
+              activeClients.set(data.id, { id: data.id, status: 'Trực tuyến', lastSeen: Date.now() });
+              updateClientListUI();
+            }
+          } else if (topic === topicName) {
+            if (data.sender === myId) return;
+
+            if (data.type === 'draw') {
+              drawLine(data.x1, data.y1, data.x2, data.y2, data.color, data.size);
+              logNet(`[${data.sender}] Vẽ nét x(${Math.round(data.x1)}->${Math.round(data.x2)})`);
+            } else if (data.type === 'clear') {
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              logNet(`[${data.sender}] Xóa sạch bảng`);
+            }
+          }
+        } catch (e) {
+          console.error('Không thể xử lý tin nhắn MQTT:', e);
+        }
+      });
+
+      client.on('error', (err) => {
+        logNet(`Lỗi kết nối MQTT: ${err.message}`);
+        document.getElementById('connStatus').textContent = 'Lỗi kết nối';
+        document.getElementById('connStatus').className = 'badge badge-amber';
+      });
+
+      client.on('offline', () => {
+        document.getElementById('connStatus').textContent = 'Ngoại tuyến';
+        document.getElementById('connStatus').className = 'badge badge-amber';
+      });
+    } else {
+      document.getElementById('connStatus').textContent = 'Chỉ vẽ cục bộ';
+      document.getElementById('connStatus').className = 'badge badge-amber';
+      logNet('Không tải được thư viện MQTT; bảng vẽ cục bộ vẫn hoạt động.');
+    }
+
     function setColor(color, element) {
       currentColor = color;
       document.querySelectorAll('.color-btn').forEach(btn => btn.classList.remove('active'));
@@ -891,7 +918,7 @@
 
     function clearBoard() {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      if (client.connected) {
+      if (client && client.connected) {
         client.publish(topicName, JSON.stringify({ sender: myId, type: 'clear' }));
       }
       logNet('Bạn đã gửi lệnh xóa toàn bộ bảng vẽ.');
