@@ -434,12 +434,15 @@
               Mã nhận diện Client: <strong id="myClientId" style="color: var(--accent-blue);">Client_4208</strong>
             </p>
             <p style="font-size: 0.75rem; color: var(--text-muted); margin-top: 0.5rem;">
-              Phòng riêng: <strong id="roomIdLabel" style="color: var(--accent-purple);"></strong>
+              Phòng của trang: <strong id="roomIdLabel" style="color: var(--accent-purple);"></strong>
             </p>
             <p class="theory-text" style="font-size: 0.8rem; margin: 0.5rem 0;">
-              Chỉ người mở link mời của phòng này mới thấy và vẽ chung bảng.
+              Mọi người mở link GitHub Pages này sẽ cùng vào một bảng vẽ.
             </p>
             <button class="btn" type="button" onclick="copyRoomLink()">🔗 Sao chép link mời</button>
+            <p class="theory-text" style="font-size: 0.75rem; margin: 0.5rem 0 0;">
+              GitHub Pages là trang công khai; ai có địa chỉ trang đều có thể tham gia.
+            </p>
           </div>
 
           <div class="card">
@@ -742,21 +745,8 @@
     const myId = 'Client_' + Math.floor(Math.random() * 9000 + 1000);
     document.getElementById('myClientId').textContent = myId;
 
-    const roomParams = new URLSearchParams(window.location.search);
-    const roomTokenPattern = /^[a-f0-9]{32}$/;
-    let roomId = roomParams.get('room');
-
-    if (!roomId || !roomTokenPattern.test(roomId)) {
-      const randomBytes = new Uint8Array(16);
-      crypto.getRandomValues(randomBytes);
-      roomId = Array.from(randomBytes, byte => byte.toString(16).padStart(2, '0')).join('');
-      roomParams.set('room', roomId);
-      const roomUrl = new URL(window.location.href);
-      roomUrl.search = roomParams.toString();
-      window.history.replaceState(null, '', roomUrl);
-    }
-
-    document.getElementById('roomIdLabel').textContent = roomId.slice(0, 8);
+    const roomId = encodeURIComponent(`${window.location.host}${window.location.pathname}`);
+    document.getElementById('roomIdLabel').textContent = roomId.slice(0, 24);
     const roomTopicPrefix = `netprog/class/whiteboard/${roomId}`;
     const topicName = `${roomTopicPrefix}/draw`;
     const presenceTopic = `${roomTopicPrefix}/presence`;
@@ -793,7 +783,7 @@
     let client = null;
 
     async function copyRoomLink() {
-      const inviteLink = window.location.href;
+      const inviteLink = `${window.location.origin}${window.location.pathname}`;
       try {
         await navigator.clipboard.writeText(inviteLink);
         logNet('Đã sao chép link mời phòng. Chỉ chia sẻ link này với người bạn muốn mời.');
