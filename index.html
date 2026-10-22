@@ -74,6 +74,216 @@
     
     .step-box { background-color: #0f172a; border: 1px solid var(--border-color); border-radius: 6px; padding: 1rem; margin-bottom: 1rem; }
     .step-box h4 { color: var(--accent-blue); font-size: 0.95rem; margin-bottom: 0.5rem; }
+
+    :root {
+      --bg-main: #fff8f4;
+      --bg-card: #fffdfb;
+      --accent-blue: #79bde8;
+      --accent-green: #75c9a5;
+      --accent-amber: #f3b85f;
+      --accent-red: #ef8297;
+      --accent-purple: #ad91df;
+      --text-main: #51465b;
+      --text-muted: #918397;
+      --border-color: #f0dfe8;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255, 218, 226, 0.42), transparent 22rem),
+        radial-gradient(circle at 92% 34%, rgba(215, 235, 255, 0.5), transparent 25rem),
+        var(--bg-main);
+      color: var(--text-main);
+    }
+
+    header {
+      position: sticky;
+      background: rgba(255, 253, 251, 0.92);
+      border-bottom: 1px solid var(--border-color);
+      box-shadow: 0 5px 22px rgba(123, 93, 120, 0.07);
+      padding: 1.1rem 2rem;
+    }
+
+    header::after {
+      content: "૮ ˶ᵔ ᵕ ᵔ˶ ა";
+      position: absolute;
+      right: 2rem;
+      top: 50%;
+      transform: translateY(-50%) rotate(3deg);
+      color: #e88aa5;
+      background: #fff0f4;
+      border: 1px solid #f8d7e1;
+      border-radius: 999px;
+      padding: 0.55rem 0.8rem;
+      font-size: 1.1rem;
+      box-shadow: 0 4px 10px rgba(210, 135, 163, 0.12);
+    }
+
+    .header-title { color: #ce7695; }
+    .header-sub { color: var(--text-muted); }
+
+    .nav-tabs {
+      background: rgba(255, 250, 248, 0.9);
+      border-bottom-color: var(--border-color);
+      gap: 0.65rem;
+      padding-top: 0.85rem;
+    }
+
+    .tab-btn {
+      border: 1px solid transparent;
+      border-radius: 14px 14px 0 0;
+      color: var(--text-muted);
+    }
+
+    .tab-btn:hover {
+      color: #bd7290;
+      background: #fff0f4;
+    }
+
+    .tab-btn.active {
+      color: #bd6688;
+      background: #fffdfb;
+      border-color: var(--border-color);
+      border-bottom-color: #fffdfb;
+      box-shadow: 0 -3px 12px rgba(211, 153, 176, 0.08);
+    }
+
+    main { padding-top: 1.75rem; padding-bottom: 3rem; }
+
+    .card {
+      background: rgba(255, 253, 251, 0.96);
+      border: 1px solid var(--border-color);
+      border-radius: 22px;
+      padding: 1.35rem;
+      box-shadow: 0 8px 24px rgba(112, 83, 111, 0.07);
+      transition: transform 180ms ease, box-shadow 180ms ease;
+    }
+
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 28px rgba(112, 83, 111, 0.11);
+    }
+
+    .card-title {
+      color: var(--text-main);
+      gap: 0.75rem;
+      line-height: 1.45;
+    }
+
+    .card-title > span:first-child::before {
+      content: "✿";
+      color: #e99ab1;
+      margin-right: 0.5rem;
+    }
+
+    .badge {
+      border-radius: 999px;
+      letter-spacing: 0.02em;
+      padding: 0.3rem 0.65rem;
+    }
+
+    .badge-blue { background: #e8f5fd; color: #4a97c7; }
+    .badge-green { background: #e7f7ef; color: #419873; }
+    .badge-amber { background: #fff3da; color: #b17a27; }
+    .badge-purple { background: #f1eafd; color: #8565bd; }
+
+    .btn {
+      background: linear-gradient(135deg, #8bc9ee, #79b6e4);
+      color: #fff;
+      border-radius: 14px;
+      box-shadow: 0 4px 0 #68a5d2, 0 7px 14px rgba(99, 157, 199, 0.18);
+      transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+    }
+
+    .btn:hover {
+      opacity: 1;
+      filter: brightness(1.04);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 0 #68a5d2, 0 10px 16px rgba(99, 157, 199, 0.2);
+    }
+
+    .btn:active {
+      transform: translateY(2px);
+      box-shadow: 0 2px 0 #68a5d2;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #f29bad, #e9829a);
+      box-shadow: 0 4px 0 #d76c86, 0 7px 14px rgba(211, 112, 138, 0.16);
+    }
+
+    .canvas-container {
+      background: #fff5f1;
+      border: 1px solid #f3dfe4;
+      border-radius: 17px;
+      padding: 0.65rem;
+    }
+
+    canvas.drawing-canvas {
+      border: 1px solid #f2e8e8;
+      border-radius: 12px;
+    }
+
+    .anim-canvas { border-radius: 12px; }
+
+    .log-box {
+      background: #fff8f6;
+      border-color: #f0dfe8;
+      border-radius: 13px;
+      color: #6b91a9;
+    }
+
+    .client-item {
+      background: #fff8f6;
+      border-color: #f0dfe8;
+      border-radius: 12px;
+      padding: 0.65rem 0.75rem;
+    }
+
+    .color-btn {
+      border: 3px solid #fff;
+      box-shadow: 0 0 0 1px #eadce3, 0 3px 7px rgba(86, 66, 82, 0.12);
+      transition: transform 160ms ease, box-shadow 160ms ease;
+    }
+
+    .color-btn:hover { transform: scale(1.1); }
+    .color-btn.active { box-shadow: 0 0 0 2px #d887a1, 0 3px 8px rgba(86, 66, 82, 0.15); }
+
+    code.inline-code {
+      background: #f2eafd;
+      color: #8565bd;
+      border-radius: 6px;
+    }
+
+    .theory-text, .theory-list { color: #786d80; }
+    .theory-list li { padding-left: 0.15rem; margin-bottom: 0.2rem; }
+    .step-box { background: #fff8f6; border-color: #f0dfe8; border-radius: 15px; }
+    .step-box h4 { color: #bd7290; }
+
+    button:focus-visible, input:focus-visible {
+      outline: 3px solid rgba(173, 145, 223, 0.55);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 700px) {
+      header { padding: 1rem; }
+      header::after { display: none; }
+      .header-title { font-size: 1.05rem; padding-right: 0; }
+      .header-sub { line-height: 1.5; }
+      .nav-tabs { padding-left: 1rem; padding-right: 1rem; }
+      .tab-btn { padding: 0.7rem 0.9rem; }
+      main { padding: 1rem; }
+      .card { padding: 1rem; border-radius: 18px; }
+      .grid-2, .grid-sidebar { gap: 0.75rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+      }
+    }
   </style>
 <style id="monica-reading-highlight-style">
         .monica-reading-highlight {
