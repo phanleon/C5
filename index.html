@@ -148,7 +148,7 @@
       box-shadow: 0 -3px 12px rgba(211, 153, 176, 0.08);
     }
 
-    main { padding-top: 1.75rem; padding-bottom: 3rem; }
+    main { position: relative; z-index: 2; padding-top: 1.75rem; padding-bottom: 3rem; }
 
     .card {
       background: rgba(255, 253, 251, 0.96);
@@ -438,6 +438,335 @@
         transition-duration: 0.01ms !important;
         animation-duration: 0.01ms !important;
       }
+    }
+
+    :root {
+      --bg-main: #171126;
+      --bg-card: #261c38;
+      --accent-blue: #9bd9ef;
+      --accent-green: #9bd69e;
+      --accent-amber: #ffbd69;
+      --accent-red: #ff8491;
+      --accent-purple: #c2a0f2;
+      --text-main: #fff3df;
+      --text-muted: #c1b2d0;
+      --border-color: #49365a;
+    }
+
+    body {
+      position: relative;
+      isolation: isolate;
+      overflow-x: hidden;
+      background:
+        radial-gradient(ellipse at 12% 18%, rgba(133, 78, 152, 0.24), transparent 28rem),
+        radial-gradient(ellipse at 88% 62%, rgba(211, 104, 52, 0.13), transparent 26rem),
+        linear-gradient(155deg, #171126 0%, #20152e 54%, #171126 100%);
+      color: var(--text-main);
+    }
+
+    body::before,
+    body::after {
+      position: fixed;
+      z-index: 1;
+      pointer-events: none;
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      line-height: 1;
+      opacity: 0.58;
+      filter: drop-shadow(0 5px 12px rgba(255, 236, 255, 0.3));
+      animation: halloween-ghost-drift 9s ease-in-out infinite;
+    }
+
+    body::before {
+      content: "👻";
+      top: 24vh;
+      left: 2vw;
+    }
+
+    body::after {
+      content: "👻";
+      top: 66vh;
+      right: 2vw;
+      animation-delay: -4.5s;
+      animation-duration: 11s;
+    }
+
+    header {
+      background: rgba(30, 22, 44, 0.92);
+      border-bottom-color: #493451;
+      box-shadow: 0 6px 24px rgba(8, 5, 17, 0.32);
+    }
+
+    header::before {
+      content: "🦇";
+      position: absolute;
+      right: 9rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.6rem;
+      animation: halloween-bat-flutter 2.4s ease-in-out infinite;
+    }
+
+    header::after {
+      content: "🎃";
+      color: #fff1d6;
+      background: linear-gradient(145deg, #573044, #38223d);
+      border-color: #80506a;
+      box-shadow: 0 4px 14px rgba(255, 145, 74, 0.2);
+      animation: halloween-pumpkin-glow 3s ease-in-out infinite;
+    }
+
+    .header-title { color: #ffc16c; }
+    .header-sub { color: #c8b8d3; }
+
+    .nav-tabs {
+      position: relative;
+      z-index: 2;
+      background: rgba(25, 18, 38, 0.96);
+      border-bottom-color: #493451;
+      scrollbar-color: #805b88 #21172f;
+    }
+
+    .tab-btn { color: #c1b2d0; }
+    .tab-btn:hover { color: #ffd394; background: rgba(255, 182, 96, 0.1); }
+
+    .tab-btn.active {
+      color: #ffd08a;
+      background: #261c38;
+      border-color: #554064;
+      border-bottom-color: #261c38;
+      box-shadow: 0 -4px 15px rgba(255, 166, 86, 0.1);
+    }
+
+    .card {
+      background: linear-gradient(145deg, rgba(43, 31, 59, 0.98), rgba(35, 26, 49, 0.98));
+      border-color: #4b385e;
+      box-shadow: 0 10px 28px rgba(7, 4, 16, 0.24);
+    }
+
+    .card:hover {
+      box-shadow: 0 14px 32px rgba(7, 4, 16, 0.34), 0 0 18px rgba(177, 116, 210, 0.08);
+    }
+
+    .card-title { color: #fff0dc; }
+    .card-title > span:first-child::before { content: "✦"; color: #ffb35f; }
+
+    .badge-blue { background: rgba(109, 177, 210, 0.18); color: #a8e1f4; }
+    .badge-green { background: rgba(105, 174, 115, 0.2); color: #b4e7b3; }
+    .badge-amber { background: rgba(220, 144, 63, 0.2); color: #ffd18e; }
+    .badge-purple { background: rgba(166, 125, 215, 0.22); color: #ddc5ff; }
+
+    .btn {
+      background: linear-gradient(135deg, #ffb45e, #f28b47);
+      color: #351b2a;
+      box-shadow: 0 4px 0 #ca6a42, 0 7px 14px rgba(232, 124, 64, 0.2);
+    }
+
+    .btn:hover {
+      box-shadow: 0 6px 0 #ca6a42, 0 10px 18px rgba(232, 124, 64, 0.25);
+    }
+
+    .btn:active { box-shadow: 0 2px 0 #ca6a42; }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #aa79d1, #875bb7);
+      color: #fff6ff;
+      box-shadow: 0 4px 0 #65448d, 0 7px 14px rgba(135, 91, 183, 0.2);
+    }
+
+    .canvas-container {
+      background: #1a1326;
+      border-color: #4b385e;
+    }
+
+    canvas.drawing-canvas {
+      background: #fffdf9;
+      border-color: #f6e8dc;
+      box-shadow: inset 0 0 0 1px rgba(104, 68, 63, 0.06);
+    }
+
+    .log-box {
+      color: #b9dbea;
+      background: #171222;
+      border-color: #49365a;
+    }
+
+    .client-item,
+    .step-box {
+      color: #f5e9dd;
+      background: #1e172d;
+      border-color: #49365a;
+    }
+
+    .theory-text,
+    .theory-list { color: #c7b9d1; }
+    .step-box h4 { color: #ffc16c; }
+
+    code.inline-code {
+      color: #ffd393;
+      background: #3b2a46;
+    }
+
+    .color-btn {
+      border-color: #261c38;
+      box-shadow: 0 0 0 1px #765d82, 0 3px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    .color-btn.active { box-shadow: 0 0 0 2px #ffbd69, 0 3px 9px rgba(0, 0, 0, 0.3); }
+
+    .game-card {
+      border-color: #73506b;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(183, 112, 152, 0.19), transparent 18rem),
+        radial-gradient(circle at 92% 84%, rgba(118, 97, 177, 0.22), transparent 20rem),
+        linear-gradient(145deg, #30213e, #241a36);
+    }
+
+    .game-card::before,
+    .game-card::after {
+      position: absolute;
+      z-index: 0;
+      pointer-events: none;
+      font-size: 2rem;
+      opacity: 0.82;
+      filter: drop-shadow(0 0 12px rgba(255, 156, 75, 0.2));
+    }
+
+    .game-card::before {
+      content: "🎃";
+      top: 1rem;
+      right: 1rem;
+      animation: halloween-pumpkin-glow 3s ease-in-out infinite;
+    }
+
+    .game-card::after {
+      content: "👻";
+      right: 5rem;
+      bottom: 1rem;
+      animation: halloween-ghost-drift 5s ease-in-out infinite;
+    }
+
+    .game-intro,
+    .game-board { position: relative; z-index: 1; }
+
+    .game-kicker { color: #ffbd76; }
+    .game-heading { color: #ffe4c5; }
+    .game-description { color: #d0bfd8; }
+
+    .game-mode-btn {
+      color: #e0d1e7;
+      background: #372843;
+      border-color: #61476e;
+      box-shadow: 0 3px 0 #4a3557;
+    }
+
+    .game-mode-btn[aria-pressed="true"] {
+      color: #351d32;
+      background: linear-gradient(135deg, #ffc06f, #ed91a4);
+      border-color: transparent;
+      box-shadow: 0 3px 0 #bd7183;
+    }
+
+    .game-status {
+      color: #f8e4ca;
+      background: rgba(31, 22, 44, 0.88);
+      border-color: #624768;
+    }
+
+    .game-board {
+      background: linear-gradient(145deg, #573448, #3e315d);
+      border-color: #80536f;
+      box-shadow: 0 12px 0 #34253f, 0 18px 32px rgba(8, 4, 16, 0.3);
+    }
+
+    .game-cell {
+      color: #d6a5e6;
+      background: linear-gradient(145deg, #fff8ed, #f7eaf1);
+      border-color: #ead5df;
+      box-shadow: 0 5px 0 #d7c0cf;
+    }
+
+    .game-cell:not(:disabled):hover { background: #fff0d9; }
+    .game-cell:active:not(:disabled) { box-shadow: 0 2px 0 #d7c0cf; }
+    .game-cell.mark-x { color: #df6481; }
+    .game-cell.mark-o { color: #7958aa; }
+    .game-cell.winning-cell { background: #eaffdc; box-shadow: 0 5px 0 #afd28e, 0 0 0 3px #d3f3aa; }
+
+    .search-stat {
+      color: #d9cadd;
+      background: #352641;
+      border-color: #594263;
+    }
+
+    .search-stat strong { color: #ffc16c; }
+
+    .chess-board {
+      border-color: #85536e;
+      box-shadow: 0 10px 24px rgba(8, 4, 16, 0.32);
+    }
+
+    .chess-square.light { background: #f8e9d2; }
+    .chess-square.dark { background: #88556e; }
+    .chess-square.last-move { background: #d99b50; }
+    .chess-square.piece-white { color: #fff8e8; text-shadow: 0 1px 3px #3d2839, 1px 0 2px #3d2839, -1px 0 2px #3d2839; }
+    .chess-square.piece-black { color: #38243d; text-shadow: 0 1px 1px rgba(255, 240, 220, 0.55); }
+
+    .chess-status,
+    .chat-messages {
+      color: #f2e4d6;
+      background: #1e172d;
+      border-color: #49365a;
+    }
+
+    .chat-message {
+      color: #f2e4d6;
+      background: #352641;
+      border-color: #594263;
+    }
+
+    .chat-message.mine {
+      background: #2c3049;
+      border-color: #4b567a;
+    }
+
+    .chat-message-meta { color: #c1a8c6; }
+    .chat-message-name { color: #ffc16c; }
+
+    .chat-compose input,
+    .name-field {
+      color: #fff3df;
+      background: #21182f;
+      border-color: #594263;
+    }
+
+    .chat-compose input::placeholder,
+    .name-field::placeholder { color: #a995b6; }
+
+    .chat-status { color: #c1b2d0; }
+
+    @keyframes halloween-ghost-drift {
+      0%, 100% { transform: translate(0, 0) rotate(-8deg); }
+      25% { transform: translate(16px, -20px) rotate(5deg); }
+      55% { transform: translate(-8px, -34px) rotate(10deg); }
+      80% { transform: translate(-20px, -12px) rotate(-4deg); }
+    }
+
+    @keyframes halloween-bat-flutter {
+      0%, 100% { transform: translateY(-50%) rotate(-8deg); }
+      50% { transform: translateY(calc(-50% - 5px)) rotate(8deg); }
+    }
+
+    @keyframes halloween-pumpkin-glow {
+      0%, 100% { filter: drop-shadow(0 0 4px rgba(255, 155, 73, 0.18)); }
+      50% { filter: drop-shadow(0 0 12px rgba(255, 155, 73, 0.58)); }
+    }
+
+    @media (max-width: 700px) {
+      header::after { display: none; }
+      header::before { right: 1rem; font-size: 1.35rem; }
+      body::before { left: 0.3rem; }
+      body::after { right: 0.3rem; }
+      .game-card::before { top: 0.5rem; right: 0.5rem; font-size: 1.5rem; }
+      .game-card::after { right: 1rem; bottom: 0.5rem; font-size: 1.5rem; }
     }
   </style>
 <style id="monica-reading-highlight-style">
