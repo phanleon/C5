@@ -259,6 +259,132 @@
     .step-box { background: #fff8f6; border-color: #f0dfe8; border-radius: 15px; }
     .step-box h4 { color: #bd7290; }
 
+    .game-card {
+      overflow: hidden;
+      position: relative;
+      background:
+        radial-gradient(circle at 8% 12%, rgba(255, 226, 236, 0.7), transparent 18rem),
+        radial-gradient(circle at 92% 84%, rgba(225, 239, 255, 0.8), transparent 20rem),
+        #fffdfb;
+    }
+
+    .game-layout {
+      display: grid;
+      grid-template-columns: minmax(260px, 1fr) minmax(260px, 0.9fr);
+      align-items: center;
+      gap: 2rem;
+    }
+
+    .game-intro { max-width: 560px; }
+    .game-kicker { color: #c57999; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+    .game-heading { color: #66516d; font-size: clamp(1.35rem, 3vw, 1.8rem); font-weight: 800; margin: 0.35rem 0 0.6rem; }
+    .game-description { color: #83758a; line-height: 1.65; margin-bottom: 1rem; }
+    .game-modes { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 0.75rem 0; }
+
+    .game-mode-btn {
+      width: auto;
+      margin: 0;
+      color: #8b7392;
+      background: #fff;
+      border: 1px solid #eadce9;
+      border-radius: 999px;
+      box-shadow: 0 3px 0 #eadce9;
+    }
+
+    .game-mode-btn[aria-pressed="true"] {
+      color: #fff;
+      background: linear-gradient(135deg, #d99aba, #bd8fd1);
+      border-color: transparent;
+      box-shadow: 0 3px 0 #b37dac;
+    }
+
+    .game-status {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 0.7rem 0.9rem;
+      margin: 1rem 0;
+      color: #735d79;
+      background: rgba(255, 255, 255, 0.82);
+      border: 1px solid #f1dfe9;
+      border-radius: 16px;
+    }
+
+    .game-mascot { font-size: 1.55rem; animation: mascot-bob 2s ease-in-out infinite; }
+    .game-status.thinking .game-mascot { animation-duration: 0.45s; }
+
+    .game-board {
+      width: min(100%, 370px);
+      aspect-ratio: 1;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: clamp(0.45rem, 2vw, 0.75rem);
+      margin: 0 auto;
+      padding: clamp(0.65rem, 2vw, 1rem);
+      background: linear-gradient(145deg, #ffeaf1, #f0eaff);
+      border: 1px solid #f1dcea;
+      border-radius: 28px;
+      box-shadow: 0 12px 0 #ead8e9, 0 18px 32px rgba(173, 132, 172, 0.16);
+    }
+
+    .game-cell {
+      min-width: 0;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      place-items: center;
+      color: #bc82b2;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid #f0e2ef;
+      border-radius: 20px;
+      box-shadow: 0 5px 0 #eadfea;
+      font-size: clamp(2.4rem, 8vw, 4.6rem);
+      font-weight: 800;
+      line-height: 1;
+      cursor: pointer;
+      transition: transform 160ms ease, background 160ms ease, box-shadow 160ms ease;
+    }
+
+    .game-cell:not(:disabled):hover { transform: translateY(-3px) rotate(-2deg); background: #fff8fb; }
+    .game-cell:active:not(:disabled) { transform: translateY(2px); box-shadow: 0 2px 0 #eadfea; }
+    .game-cell:disabled { cursor: default; }
+    .game-cell.mark-x { color: #e58ca6; animation: mark-pop 260ms cubic-bezier(.2, 1.5, .5, 1); }
+    .game-cell.mark-o { color: #83b7df; animation: mark-pop 260ms cubic-bezier(.2, 1.5, .5, 1); }
+    .game-cell.winning-cell { background: #f0ffef; box-shadow: 0 5px 0 #d3edd2, 0 0 0 3px #b8e5bb; }
+
+    .game-footer { max-width: 470px; margin: 1.2rem auto 0; text-align: center; }
+    .game-reset { max-width: 260px; margin: 0 auto; }
+
+    .search-stats {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-top: 0.8rem;
+    }
+
+    .search-stat {
+      padding: 0.35rem 0.65rem;
+      color: #7a6c80;
+      background: #fff;
+      border: 1px solid #eee1eb;
+      border-radius: 999px;
+      font-size: 0.78rem;
+    }
+
+    .search-stat strong { color: #bc7897; }
+
+    @keyframes mark-pop {
+      from { opacity: 0; transform: scale(0.4) rotate(-12deg); }
+      to { opacity: 1; transform: scale(1) rotate(0); }
+    }
+
+    @keyframes mascot-bob {
+      0%, 100% { transform: translateY(0) rotate(-4deg); }
+      50% { transform: translateY(-4px) rotate(4deg); }
+    }
+
     button:focus-visible, input:focus-visible {
       outline: 3px solid rgba(173, 145, 223, 0.55);
       outline-offset: 3px;
@@ -274,6 +400,8 @@
       main { padding: 1rem; }
       .card { padding: 1rem; border-radius: 18px; }
       .grid-2, .grid-sidebar { gap: 0.75rem; }
+      .game-layout { grid-template-columns: 1fr; gap: 1rem; }
+      .game-board { width: min(100%, 340px); }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -419,6 +547,50 @@
 
     <!-- TAB 3: PHÒNG LAB WHITEBOARD PHÂN TÁN -->
     <div id="tab3" class="tab-content">
+      <section class="card game-card" aria-labelledby="gameHeading">
+        <div class="game-layout">
+          <div class="game-intro">
+            <p class="game-kicker">Góc chơi mini · 3 × 3</p>
+            <h2 class="game-heading" id="gameHeading">Caro cùng bé thỏ AI 🐰</h2>
+            <p class="game-description">
+              Bạn đi <strong style="color: #e58ca6;">X</strong> trước, bé thỏ đi
+              <strong style="color: #69a8d4;">O</strong>. Chọn thuật toán để xem AI tìm nước đi như thế nào nhé!
+            </p>
+            <div class="game-modes" role="group" aria-label="Chọn thuật toán cho AI">
+              <button class="btn game-mode-btn" id="minimaxMode" type="button" aria-pressed="true" onclick="setGameMode('minimax')">
+                🌸 Minimax
+              </button>
+              <button class="btn game-mode-btn" id="alphaBetaMode" type="button" aria-pressed="false" onclick="setGameMode('alphabeta')">
+                ✨ Alpha-Beta
+              </button>
+            </div>
+            <p class="theory-text" id="gameModeHint" style="font-size: 0.82rem; margin: 0;">
+              Minimax duyệt các nước đi có thể để chọn kết quả tốt nhất.
+            </p>
+            <div class="game-status" id="gameStatus" role="status" aria-live="polite">
+              <span class="game-mascot" aria-hidden="true">🐰</span>
+              <span>Bạn đi trước nha! Chọn một ô để bắt đầu 🌷</span>
+            </div>
+            <button class="btn game-reset" type="button" onclick="resetTicTacToe()">🔄 Chơi ván mới</button>
+            <div class="search-stats" aria-live="polite">
+              <span class="search-stat">Nút đã xét: <strong id="searchNodes">0</strong></span>
+              <span class="search-stat">Nhánh đã cắt: <strong id="searchPruned">0</strong></span>
+            </div>
+          </div>
+          <div class="game-board" id="gameBoard" role="group" aria-label="Bàn cờ caro 3 nhân 3">
+            <button class="game-cell" type="button" data-cell="0" aria-label="Ô 1"></button>
+            <button class="game-cell" type="button" data-cell="1" aria-label="Ô 2"></button>
+            <button class="game-cell" type="button" data-cell="2" aria-label="Ô 3"></button>
+            <button class="game-cell" type="button" data-cell="3" aria-label="Ô 4"></button>
+            <button class="game-cell" type="button" data-cell="4" aria-label="Ô 5"></button>
+            <button class="game-cell" type="button" data-cell="5" aria-label="Ô 6"></button>
+            <button class="game-cell" type="button" data-cell="6" aria-label="Ô 7"></button>
+            <button class="game-cell" type="button" data-cell="7" aria-label="Ô 8"></button>
+            <button class="game-cell" type="button" data-cell="8" aria-label="Ô 9"></button>
+          </div>
+        </div>
+      </section>
+
       <div class="grid-sidebar">
         <div>
           <div class="card">
@@ -733,6 +905,188 @@
       }
       draw();
     }
+
+    const gameHuman = 'X';
+    const gameAi = 'O';
+    const gameMoveOrder = [4, 0, 2, 6, 8, 1, 3, 5, 7];
+    const gameWinLines = [
+      [0, 1, 2], [3, 4, 5], [6, 7, 8],
+      [0, 3, 6], [1, 4, 7], [2, 5, 8],
+      [0, 4, 8], [2, 4, 6]
+    ];
+    let gameBoardState = Array(9).fill('');
+    let gameMode = 'minimax';
+    let gameFinished = false;
+    let gameThinking = false;
+    let gameAiTimer = null;
+
+    function getGameWinner(board) {
+      return gameWinLines.find(line => line.every(index => board[index] && board[index] === board[line[0]])) || null;
+    }
+
+    function renderTicTacToe() {
+      const winningLine = getGameWinner(gameBoardState);
+      document.querySelectorAll('.game-cell').forEach((cell, index) => {
+        const mark = gameBoardState[index];
+        cell.textContent = mark;
+        cell.classList.toggle('mark-x', mark === gameHuman);
+        cell.classList.toggle('mark-o', mark === gameAi);
+        cell.classList.toggle('winning-cell', Boolean(winningLine && winningLine.includes(index)));
+        cell.disabled = gameFinished || gameThinking || Boolean(mark);
+        cell.setAttribute('aria-label', `Ô ${index + 1}${mark ? `, ${mark}` : ', trống'}`);
+      });
+      document.getElementById('gameStatus').classList.toggle('thinking', gameThinking);
+    }
+
+    function setGameStatus(message, mascot) {
+      const status = document.getElementById('gameStatus');
+      status.querySelector('.game-mascot').textContent = mascot;
+      status.querySelector('span:last-child').textContent = message;
+    }
+
+    function finishTicTacToe() {
+      const winningLine = getGameWinner(gameBoardState);
+      if (winningLine) {
+        gameFinished = true;
+        if (gameBoardState[winningLine[0]] === gameHuman) {
+          setGameStatus('Bạn thắng rồi! Bé thỏ tặng bạn một bông hoa 🌼', '🥳');
+        } else {
+          setGameStatus('Bé thỏ thắng mất rồi! Ván nữa nha? 💕', '🐰');
+        }
+        return true;
+      }
+      if (gameBoardState.every(Boolean)) {
+        gameFinished = true;
+        setGameStatus('Hòa rồi! Hai bên đều giỏi quá ✨', '🤝');
+        return true;
+      }
+      return false;
+    }
+
+    function searchGame(board, maximizing, depth, stats, alpha, beta, useAlphaBeta) {
+      stats.nodes++;
+      const winningLine = getGameWinner(board);
+      if (winningLine) {
+        stats.leaves++;
+        return board[winningLine[0]] === gameAi ? 10 - depth : depth - 10;
+      }
+      if (board.every(Boolean)) {
+        stats.leaves++;
+        return 0;
+      }
+
+      let bestScore = maximizing ? -Infinity : Infinity;
+      const mark = maximizing ? gameAi : gameHuman;
+      const availableMoves = gameMoveOrder.filter(index => !board[index]);
+
+      for (let moveIndex = 0; moveIndex < availableMoves.length; moveIndex++) {
+        const index = availableMoves[moveIndex];
+        board[index] = mark;
+        const score = searchGame(board, !maximizing, depth + 1, stats, alpha, beta, useAlphaBeta);
+        board[index] = '';
+
+        if (maximizing) {
+          bestScore = Math.max(bestScore, score);
+          alpha = Math.max(alpha, bestScore);
+        } else {
+          bestScore = Math.min(bestScore, score);
+          beta = Math.min(beta, bestScore);
+        }
+
+        if (useAlphaBeta && alpha >= beta) {
+          stats.pruned += availableMoves.length - moveIndex - 1;
+          break;
+        }
+      }
+      return bestScore;
+    }
+
+    function chooseGameAiMove() {
+      const useAlphaBeta = gameMode === 'alphabeta';
+      const stats = { nodes: 1, leaves: 0, pruned: 0 };
+      let bestMove = -1;
+      let bestScore = -Infinity;
+      let alpha = -Infinity;
+
+      for (const index of gameMoveOrder) {
+        if (gameBoardState[index]) continue;
+        gameBoardState[index] = gameAi;
+        const score = searchGame(gameBoardState, false, 1, stats, alpha, Infinity, useAlphaBeta);
+        gameBoardState[index] = '';
+
+        if (score > bestScore) {
+          bestScore = score;
+          bestMove = index;
+        }
+        alpha = Math.max(alpha, bestScore);
+      }
+
+      document.getElementById('searchNodes').textContent = stats.nodes.toLocaleString('vi-VN');
+      document.getElementById('searchPruned').textContent = stats.pruned.toLocaleString('vi-VN');
+      return bestMove;
+    }
+
+    function playTicTacToe(index) {
+      if (gameFinished || gameThinking || gameBoardState[index]) return;
+
+      gameBoardState[index] = gameHuman;
+      if (finishTicTacToe()) {
+        renderTicTacToe();
+        return;
+      }
+
+      gameThinking = true;
+      setGameStatus('Bé thỏ đang suy nghĩ nước đi thông minh... ✨', '🐰');
+      renderTicTacToe();
+
+      gameAiTimer = setTimeout(() => {
+        const aiMove = chooseGameAiMove();
+        if (aiMove < 0) {
+          gameThinking = false;
+          gameFinished = true;
+          setGameStatus('Ván chơi kết thúc rồi, mình bắt đầu ván mới nhé!', '🌷');
+          renderTicTacToe();
+          return;
+        }
+
+        gameBoardState[aiMove] = gameAi;
+        gameThinking = false;
+        if (!finishTicTacToe()) {
+          setGameStatus('Tới lượt bạn nè! Cố lên nha 🌸', '🐰');
+        }
+        renderTicTacToe();
+      }, 380);
+    }
+
+    function resetTicTacToe() {
+      if (gameAiTimer !== null) {
+        clearTimeout(gameAiTimer);
+        gameAiTimer = null;
+      }
+      gameBoardState = Array(9).fill('');
+      gameFinished = false;
+      gameThinking = false;
+      document.getElementById('searchNodes').textContent = '0';
+      document.getElementById('searchPruned').textContent = '0';
+      setGameStatus('Bạn đi trước nha! Chọn một ô để bắt đầu 🌷', '🐰');
+      renderTicTacToe();
+    }
+
+    function setGameMode(mode) {
+      if (mode !== 'minimax' && mode !== 'alphabeta') return;
+      gameMode = mode;
+      document.getElementById('minimaxMode').setAttribute('aria-pressed', String(mode === 'minimax'));
+      document.getElementById('alphaBetaMode').setAttribute('aria-pressed', String(mode === 'alphabeta'));
+      document.getElementById('gameModeHint').textContent = mode === 'minimax'
+        ? 'Minimax duyệt các nước đi có thể để chọn kết quả tốt nhất.'
+        : 'Alpha-Beta chọn nước đi như Minimax nhưng cắt nhánh không cần xét nhanh hơn.';
+      resetTicTacToe();
+    }
+
+    document.querySelectorAll('.game-cell').forEach(cell => {
+      cell.addEventListener('click', () => playTicTacToe(Number(cell.dataset.cell)));
+    });
+    renderTicTacToe();
 
     // --- TAB 3: WHITEBOARD & TOUCH FIX ---
     const canvas = document.getElementById('whiteboard');
